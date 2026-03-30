@@ -1,0 +1,98 @@
+
+.registerPage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-dark);
+    padding: 16px;
+}
+
+.registerCard {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--bg-secondary);
+    padding: 32px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.registerTitle {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--text-primary);
+}
+
+.registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.registerFormGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.registerLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.registerInput {
+    width: 100%;
+    padding: 10px 14px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.registerInput:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.registerInput::placeholder {
+    color: var(--text-muted);
+}
+
+.registerError {
+    color: var(--color-error);
+    font-size: 14px;
+}
+
+.registerActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.registerButton {
+    padding: 10px 20px;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.registerButton:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.registerLink {
+    font-size: 14px;
+    color: var(--color-primary-light);
+}
