@@ -16,6 +16,19 @@ services:
       db:
         condition: service_healthy
 
+  composer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    profiles:
+      - tools
+    working_dir: /var/www/html
+    volumes:
+      - ./laravel:/var/www/html
+    entrypoint: ["composer"]
+    networks:
+      - laravel_net
+
   db:
     image: mysql:8.0
     container_name: laravel_db
