@@ -150,14 +150,14 @@ class UserController extends Controller
 
     private function adminRoleId(): int
     {
-        return (int) Role::query()->where('name', 'Admin')->value('id');
+        return (int) Role::query()->where('name', 'admin')->value('id');
     }
 
     private function adminUsersCount(): int
     {
         return User::query()
             ->whereHas('role', function ($query) {
-                $query->where('name', 'Admin');
+                $query->where('name', 'admin');
             })
             ->count();
     }
