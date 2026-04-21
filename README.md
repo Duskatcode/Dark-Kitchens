@@ -46,10 +46,92 @@ Desarrollar una aplicación web en PHP que permita gestionar el menú, registrar
 - Cambio de estado de pedidos.
 - Panel básico de administración.
 
+## Instalación local con Docker
+
+### Requisitos
+- Docker Desktop corriendo.
+- Estar ubicado en la raíz del repo (donde vive `docker-compose.yml`).
+
+### Arranque desde cero
+```bash
+cp laravel/.env.example laravel/.env
+docker compose up -d --build
+docker compose --profile tools run --rm composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+```
+
+### Verificación rápida
+```bash
+docker compose config
+docker compose ps
+docker compose exec app php artisan --version
+```
+
+La app queda disponible en `http://localhost:8080` y MySQL en `127.0.0.1:3307`.
+
 ## Uso de Artisan
-Como el proyecto corre en Docker, no necesitas tener PHP instalado. Usa el comando `exec` para hablar con el contenedor:
+Para cualquier comando de Laravel:
 
 ```bash
-docker compose up -d
 docker compose exec app php artisan [comando]
+```
+
+## Nota importante sobre Composer
+Las dependencias de Laravel **no se instalan en el build** de la imagen para desarrollo. Este proyecto monta `./laravel` sobre `/var/www/html`, por lo que cualquier `vendor/` generado en la imagen se tapa con el volumen del host. Por eso el flujo correcto es ejecutar `composer install` explícitamente con:
+
+```bash
+docker compose --profile tools run --rm composer install
+```
+
+## Demo CRUD administrativo de usuarios
+
+### Seeder de admin (idempotente)
+El seeder crea/actualiza automáticamente:
+
+- Rol `Admin`
+- Rol `User`
+- Rol `Cook`
+- Usuario admin de prueba
+
+Credenciales del admin de prueba:
+
+- Email: `admin@darkkitchens.local`
+- Password: `Admin12345!`
+
+### Ruta del módulo
+- `http://localhost:8080/admin/users`
+
+### Flujo de demostración
+1. Ejecutar migraciones y seed:
+
+```bash
+docker compose exec app php artisan migrate:fresh --seed
+```
+
+2. Iniciar sesión con el admin en:
+- `http://localhost:8080/login`
+
+3. Entrar al dashboard y abrir `Gestionar usuarios`.
+
+4. En `/admin/users` demostrar:
+- **Listar** usuarios.
+- **Crear** un usuario con nombre, apellido, email, rol y password.
+- **Editar** ese usuario (si dejas password vacío, se mantiene la anterior).
+- **Eliminar** ese usuario.
+
+5. Validar restricción de acceso:
+- Inicia sesión con un usuario normal (`register`) y abre `/admin/users`.
+- Debe responder `403` (acceso denegado).
+
+### Verificación rápida por consola
+```bash
+docker compose exec app php artisan route:list | grep admin/users
+```
+
+Debe listar rutas `admin.users.*` para index, create, store, show, edit, update y destroy.
+
+### Tests del CRUD admin
+```bash
+docker compose exec app php artisan test --filter=AdminUserCrudTest
 ```

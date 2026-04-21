@@ -1,0 +1,209 @@
+.adminUsersPage {
+    min-height: 100vh;
+    padding: 24px;
+    background-color: var(--bg-dark);
+}
+
+.adminUsersHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.adminUsersTitle {
+    color: var(--text-primary);
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.adminUsersSubtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.adminUsersActions {
+    display: flex;
+    gap: 10px;
+}
+
+.adminUsersButton {
+    border: 0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.adminUsersButtonPrimary {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.adminUsersButtonPrimary:hover {
+    background: var(--color-primary-hover);
+    text-decoration: none;
+}
+
+.adminUsersButtonSecondary {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+}
+
+.adminUsersButtonSecondary:hover {
+    text-decoration: none;
+    border-color: var(--text-muted);
+}
+
+.adminUsersCard {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.adminUsersTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.adminUsersTable th,
+.adminUsersTable td {
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-primary);
+}
+
+.adminUsersTable th {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.adminUsersTableActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.adminUsersTableActions form {
+    margin: 0;
+}
+
+.adminInlineAction {
+    background: transparent;
+    color: var(--color-primary-light);
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.adminInlineActionDanger {
+    color: var(--color-error);
+}
+
+.adminAlert {
+    margin-bottom: 14px;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.adminAlertSuccess {
+    background: rgba(26, 179, 148, 0.15);
+    color: #9ff0dd;
+}
+
+.adminAlertError {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fecaca;
+}
+
+.adminUserForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.adminFormGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.adminFormGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.adminFormGroup label {
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.adminFormGroup input,
+.adminFormGroup select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-input);
+    color: var(--text-primary);
+}
+
+.adminFormGroupWide {
+    grid-column: span 2;
+}
+
+.adminFieldError {
+    color: var(--color-error);
+    font-size: 13px;
+}
+
+.adminFormActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.adminUserDetailGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.adminDetailLabel {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.adminDetailValue {
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.adminPagination {
+    margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+    .adminUsersHeader {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .adminFormGrid,
+    .adminUserDetailGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .adminFormGroupWide {
+        grid-column: span 1;
+    }
+}
