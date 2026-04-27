@@ -65,7 +65,7 @@ class RoleController extends Controller
 
     public function destroy(Role $role): RedirectResponse
     {
-        $protectedRoles = ['admin', 'client', 'cook'];
+        $protectedRoles = Role::coreRoles();
 
         if (in_array(strtolower($role->name), $protectedRoles, true)) {
             session()->flash('error', 'The role "'.$role->name.'" cannot be deleted.');

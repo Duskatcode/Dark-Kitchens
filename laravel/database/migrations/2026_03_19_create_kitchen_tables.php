@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId('role_id')->constrained('roles')->restrictOnDelete('cascade');
+            $table->foreignId('role_id')->constrained('roles')->restrictOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -51,7 +52,7 @@ return new class extends Migration
 
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->timestamps();
         });
 
@@ -73,6 +74,21 @@ return new class extends Migration
             $table->decimal('subtotal', 10, 2);
             $table->timestamps();
         });
+
+        $timestamp = now();
+
+        DB::table('roles')->insertOrIgnore([
+            ['name' => 'admin', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'client', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'cook', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+        ]);
+
+        DB::table('statuses')->insertOrIgnore([
+            ['name' => 'pending', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'in_progress', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'completed', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'cancelled', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+        ]);
     }
 
     public function down(): void
