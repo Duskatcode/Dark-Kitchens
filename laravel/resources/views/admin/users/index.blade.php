@@ -28,46 +28,27 @@
         <div class="adminAlert adminAlertError">{{ $errors->first('delete') }}</div>
     @endif
 
-    <section class="adminUsersCard">
-        <table class="adminUsersTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($users as $user)
-                    <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }} {{ $user->last_name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->role?->name ?? 'Sin rol' }}</td>
-                        <td class="adminUsersTableActions">
-                            <a href="{{ route('admin.users.show', $user) }}" class="adminInlineAction">Ver</a>
-                            <a href="{{ route('admin.users.edit', $user) }}" class="adminInlineAction">Editar</a>
-
-                            <form method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="adminInlineAction adminInlineActionDanger">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5">No hay usuarios registrados.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-
-        <div class="adminPagination">
-            {{ $users->links() }}
+    <form method="GET" action="{{ route('admin.users.index') }}" class="adminUsersFilters">
+        <div class="adminUsersFilterGroup">
+            <label for="filter" class="adminFormLabel">Buscar</label>
+            <input id="filter" type="search" name="filter" class="adminFormControl" value="{{ $filter }}" placeholder="Nombre, correo o rol">
         </div>
-    </section>
+
+        <div class="adminUsersFilterGroup">
+            <label for="records_per_page" class="adminFormLabel">Registros por página</label>
+            <select id="records_per_page" name="records_per_page" class="adminFormControl">
+                @foreach ($recordsPerPageOptions as $option)
+                    <option value="{{ $option }}" @selected($recordsPerPage === $option)>{{ $option }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="adminUsersFilterActions">
+            <a href="{{ route('admin.users.index') }}" class="adminUsersButton adminUsersButtonSecondary">Limpiar</a>
+            <button type="submit" class="adminUsersButton adminUsersButtonPrimary">Filtrar</button>
+        </div>
+    </form>
+
+    @include('admin.users.partials.user-table', ['users' => $users])
 </div>
 @endsection

@@ -123,6 +123,25 @@
     color: #fecaca;
 }
 
+.adminUsersFilters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 180px auto;
+    align-items: end;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.adminUsersFilterGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.adminUsersFilterActions {
+    display: flex;
+    gap: 10px;
+}
+
 .adminUserForm {
     display: flex;
     flex-direction: column;
@@ -141,13 +160,12 @@
     gap: 8px;
 }
 
-.adminFormGroup label {
+.adminFormLabel {
     color: var(--text-primary);
     font-size: 14px;
 }
 
-.adminFormGroup input,
-.adminFormGroup select {
+.adminFormControl {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
@@ -162,6 +180,11 @@
 
 .adminFieldError {
     color: var(--color-error);
+    font-size: 13px;
+}
+
+.adminFormHelp {
+    color: var(--text-muted);
     font-size: 13px;
 }
 
@@ -200,6 +223,10 @@
 
     .adminFormGrid,
     .adminUserDetailGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .adminUsersFilters {
         grid-template-columns: 1fr;
     }
 

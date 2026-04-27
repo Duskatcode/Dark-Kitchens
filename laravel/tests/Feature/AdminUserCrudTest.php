@@ -28,7 +28,7 @@ class AdminUserCrudTest extends TestCase
 
     public function test_non_admin_user_cannot_access_admin_users_module(): void
     {
-        $nonAdmin = $this->createUserWithRole('User');
+        $nonAdmin = $this->createUserWithRole(Role::CLIENT);
 
         $response = $this->actingAs($nonAdmin)->get(route('admin.users.index'));
 
@@ -37,8 +37,8 @@ class AdminUserCrudTest extends TestCase
 
     public function test_admin_can_create_update_and_delete_users(): void
     {
-        $admin = $this->createUserWithRole('Admin');
-        $userRole = Role::query()->firstOrCreate(['name' => 'User']);
+        $admin = $this->createUserWithRole(Role::ADMIN);
+        $userRole = Role::query()->firstOrCreate(['name' => Role::CLIENT]);
 
         $this->actingAs($admin)
             ->get(route('admin.users.index'))
@@ -87,7 +87,7 @@ class AdminUserCrudTest extends TestCase
 
     public function test_admin_cannot_delete_himself(): void
     {
-        $admin = $this->createUserWithRole('Admin');
+        $admin = $this->createUserWithRole(Role::ADMIN);
 
         $this->actingAs($admin)
             ->delete(route('admin.users.destroy', $admin))

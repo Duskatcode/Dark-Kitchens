@@ -8,18 +8,35 @@ use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $recordsPerPageOptions = [10, 25, 50, 100];
+        $recordsPerPage = (int) $request->input('records_per_page', 10);
+        $recordsPerPage = in_array($recordsPerPage, $recordsPerPageOptions, true) ? $recordsPerPage : 10;
+        $filter = trim((string) $request->input('filter', ''));
+
         $users = User::query()
             ->with('role')
+            ->when($filter !== '', function ($query) use ($filter): void {
+                $query->where(function ($query) use ($filter): void {
+                    $query->where('name', 'like', "%{$filter}%")
+                        ->orWhere('last_name', 'like', "%{$filter}%")
+                        ->orWhere('email', 'like', "%{$filter}%")
+                        ->orWhereHas('role', function ($query) use ($filter): void {
+                            $query->where('name', 'like', "%{$filter}%");
+                        });
+                });
+            })
             ->latest('id')
-            ->paginate(10);
+            ->paginate($recordsPerPage)
+            ->withQueryString();
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('filter', 'recordsPerPage', 'recordsPerPageOptions', 'users'));
     }
 
     public function create(): View
