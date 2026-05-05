@@ -34,6 +34,7 @@ class UserFactory extends Factory
             'role_id' => fn () => Role::query()->firstOrCreate([
                 'name' => Role::DEFAULT_REGISTRATION_ROLE,
             ])->id,
+
             'remember_token' => Str::random(10),
         ];
     }

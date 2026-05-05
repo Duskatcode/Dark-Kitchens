@@ -1,5 +1,7 @@
 FROM php:8.2-apache
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 RUN apt-get update && apt-get install -y \
     git curl libpng-dev libonig-dev libxml2-dev libzip-dev zip unzip nodejs npm \
     && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath gd \

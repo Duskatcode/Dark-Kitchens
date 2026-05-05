@@ -19,21 +19,21 @@ class UserSeeder extends Seeder
                 'last_name' => 'User',
                 'email' => 'admin@test.com',
                 'password' => bcrypt('password'),
-                'role' => 'admin',
+                'role' => Role::ADMIN,
             ],
             [
                 'name' => 'Client',
                 'last_name' => 'User',
                 'email' => 'client@test.com',
                 'password' => bcrypt('password'),
-                'role' => 'client',
+                'role' => Role::CLIENT,
             ],
             [
                 'name' => 'Cook',
                 'last_name' => 'User',
                 'email' => 'cook@test.com',
                 'password' => bcrypt('password'),
-                'role' => 'cook',
+                'role' => Role::COOK,
             ],
         ];
 

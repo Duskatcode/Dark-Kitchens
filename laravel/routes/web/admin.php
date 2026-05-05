@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:admin'])
@@ -10,6 +11,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         })->name('dashboard');
+
+        Route::resource('users', UserController::class);
 
         Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
         Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
