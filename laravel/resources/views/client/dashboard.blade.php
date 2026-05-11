@@ -32,11 +32,11 @@
         </section>
 
         <section class="dashboardGrid">
-            <div class="dashboardActionCard dashboardActionCardMuted">
-                <span class="dashboardCardLabel">Próximamente</span>
+            <a href="{{ route('client.menu.index') }}" class="dashboardActionCard">
+                <span class="dashboardCardLabel">Activo</span>
                 <h3>Ver menú</h3>
                 <p>Explora productos disponibles, precios y categorías.</p>
-            </div>
+            </a>
 
             <div class="dashboardActionCard dashboardActionCardMuted">
                 <span class="dashboardCardLabel">Próximamente</span>
