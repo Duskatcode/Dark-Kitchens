@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -12,6 +13,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
         Route::resource('users', UserController::class);
+        Route::resource('categories', CategoryController::class)->except(['show']);
 
         Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
         Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
