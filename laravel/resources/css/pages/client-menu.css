@@ -1,7 +1,7 @@
 .clientMenuPage {
     min-height: 100vh;
     padding: 32px 24px;
-    background-color: var(--bg-dark);
+    background-color: var(--bg-primary);
     color: var(--text-primary);
 }
 
@@ -15,7 +15,7 @@
 }
 
 .clientMenuEyebrow {
-    color: var(--color-primary-light);
+    color: var(--color-accent-blue);
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -27,6 +27,7 @@
     font-size: 32px;
     font-weight: 800;
     color: var(--text-primary);
+    letter-spacing: 0;
     margin-bottom: 8px;
 }
 
@@ -47,7 +48,7 @@
     justify-content: center;
     min-height: 40px;
     padding: 9px 14px;
-    border-radius: 8px;
+    border-radius: var(--radius-control);
     border: 1px solid transparent;
     font-size: 14px;
     font-weight: 700;
@@ -69,9 +70,15 @@
 }
 
 .clientMenuButtonSecondary {
-    background-color: transparent;
+    background-color: var(--bg-secondary);
     color: var(--text-primary);
-    border-color: var(--border-light);
+    border-color: var(--border-color);
+}
+
+.clientMenuButtonSecondary:hover {
+    background-color: var(--color-accent-navy);
+    border-color: var(--color-accent-navy);
+    color: #fff;
 }
 
 .clientMenuFilters {
@@ -82,9 +89,10 @@
     gap: 14px;
     align-items: end;
     background-color: var(--bg-secondary);
-    border: 1px solid var(--border-light);
-    border-radius: 14px;
-    padding: 18px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
 }
 
 .clientMenuFilterGroup {
@@ -94,16 +102,16 @@
 }
 
 .clientMenuFilterGroup label {
-    color: var(--text-primary);
+    color: var(--text-secondary);
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .clientMenuFilterGroup input,
 .clientMenuFilterGroup select {
     width: 100%;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 10px 12px;
+    border-radius: var(--radius-control);
     border: 1px solid var(--border-color);
     background-color: var(--bg-input);
     color: var(--text-primary);
@@ -126,9 +134,20 @@
 .clientMenuDetailCard,
 .clientMenuEmpty {
     background-color: var(--bg-secondary);
-    border: 1px solid var(--border-light);
-    border-radius: 16px;
-    padding: 22px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+}
+
+.clientMenuCard {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.clientMenuCard:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-card-hover);
 }
 
 .clientMenuCardHeader {
@@ -144,10 +163,35 @@
     width: fit-content;
     padding: 4px 10px;
     border-radius: 999px;
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--border-color);
     color: var(--text-secondary);
+    background-color: var(--surface-muted);
     font-size: 12px;
     font-weight: 700;
+}
+
+.clientMenuStatus-pending {
+    color: var(--status-pending-text);
+    background-color: var(--status-pending-bg);
+    border-color: var(--status-pending-border);
+}
+
+.clientMenuStatus-in_progress {
+    color: var(--status-progress-text);
+    background-color: var(--status-progress-bg);
+    border-color: var(--status-progress-border);
+}
+
+.clientMenuStatus-completed {
+    color: var(--status-completed-text);
+    background-color: var(--status-completed-bg);
+    border-color: var(--status-completed-border);
+}
+
+.clientMenuStatus-cancelled {
+    color: var(--status-cancelled-text);
+    background-color: var(--status-cancelled-bg);
+    border-color: var(--status-cancelled-border);
 }
 
 .clientMenuPrice {
@@ -173,7 +217,7 @@
 .clientMenuCardLink {
     display: inline-flex;
     margin-top: 18px;
-    color: var(--color-primary-light);
+    color: var(--color-accent-blue);
     font-weight: 700;
 }
 
@@ -198,7 +242,7 @@
     align-items: center;
     margin-top: 24px;
     padding-top: 18px;
-    border-top: 1px solid var(--border-light);
+    border-top: 1px solid var(--border-color);
 }
 
 .clientMenuDetailMeta span {
@@ -214,8 +258,8 @@
     margin-top: 20px;
     padding: 14px;
     border-radius: 12px;
-    background-color: rgba(79, 70, 229, 0.10);
-    border: 1px solid var(--border-light);
+    background-color: var(--surface-blue);
+    border: 1px solid var(--border-color);
     color: var(--text-secondary);
     font-size: 14px;
 }
@@ -240,9 +284,9 @@
     margin: 0 auto 18px;
     padding: 14px;
     border-radius: 12px;
-    background-color: rgba(16, 185, 129, 0.12);
-    border: 1px solid var(--border-light);
-    color: #9ff0dd;
+    background-color: var(--status-completed-bg);
+    border: 1px solid var(--status-completed-border);
+    color: var(--status-completed-text);
     font-size: 14px;
 }
 
@@ -253,7 +297,7 @@
     align-items: end;
     margin-top: 24px;
     padding-top: 20px;
-    border-top: 1px solid var(--border-light);
+    border-top: 1px solid var(--border-color);
 }
 
 .clientMenuError {
@@ -274,8 +318,8 @@
     gap: 16px;
     padding: 14px;
     border-radius: 12px;
-    border: 1px solid var(--border-light);
-    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-muted);
 }
 
 .clientOrderItem div {

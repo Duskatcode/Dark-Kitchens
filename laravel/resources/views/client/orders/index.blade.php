@@ -29,7 +29,7 @@
         @forelse ($orders as $order)
             <article class="clientMenuCard">
                 <div class="clientMenuCardHeader">
-                    <span class="clientMenuCategory">{{ $order->status?->name }}</span>
+                    <span class="clientMenuCategory clientMenuStatus-{{ $order->status?->name }}">{{ $order->status?->name }}</span>
                     <span class="clientMenuPrice">${{ number_format((float) $order->total_amount, 0, ',', '.') }}</span>
                 </div>
 

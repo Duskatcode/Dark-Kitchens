@@ -36,7 +36,7 @@
         @forelse ($orders as $order)
             <article class="cookOrderCard">
                 <div class="cookOrderCardHeader">
-                    <span class="cookOrderStatus">{{ $order->status?->name }}</span>
+                    <span class="cookOrderStatus cookOrderStatus-{{ $order->status?->name }}">{{ $order->status?->name }}</span>
                     <span class="cookOrderTotal">${{ number_format((float) $order->total_amount, 0, ',', '.') }}</span>
                 </div>
 

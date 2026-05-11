@@ -36,7 +36,7 @@
 
     <section class="cookOrderDetail">
         <div class="cookOrderDetailCard">
-            <span class="cookOrderStatus">{{ $order->status?->name }}</span>
+            <span class="cookOrderStatus cookOrderStatus-{{ $order->status?->name }}">{{ $order->status?->name }}</span>
 
             <h2>Productos del pedido</h2>
 

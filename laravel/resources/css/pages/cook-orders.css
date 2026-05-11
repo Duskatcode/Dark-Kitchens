@@ -1,7 +1,7 @@
 .cookOrdersPage {
     min-height: 100vh;
     padding: 32px 24px;
-    background-color: var(--bg-dark);
+    background-color: var(--bg-primary);
     color: var(--text-primary);
 }
 
@@ -15,7 +15,7 @@
 }
 
 .cookOrdersEyebrow {
-    color: var(--color-primary-light);
+    color: var(--color-accent-blue);
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -27,6 +27,7 @@
     font-size: 32px;
     font-weight: 800;
     color: var(--text-primary);
+    letter-spacing: 0;
     margin-bottom: 8px;
 }
 
@@ -48,7 +49,7 @@
     justify-content: center;
     min-height: 40px;
     padding: 9px 14px;
-    border-radius: 8px;
+    border-radius: var(--radius-control);
     border: 1px solid transparent;
     font-size: 14px;
     font-weight: 700;
@@ -70,9 +71,15 @@
 }
 
 .cookOrdersButtonSecondary {
-    background-color: transparent;
+    background-color: var(--bg-secondary);
     color: var(--text-primary);
-    border-color: var(--border-light);
+    border-color: var(--border-color);
+}
+
+.cookOrdersButtonSecondary:hover {
+    background-color: var(--color-accent-navy);
+    border-color: var(--color-accent-navy);
+    color: #fff;
 }
 
 .cookOrdersAlert {
@@ -80,18 +87,20 @@
     margin: 0 auto 18px;
     padding: 14px;
     border-radius: 12px;
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--border-color);
     font-size: 14px;
 }
 
 .cookOrdersAlertSuccess {
-    background-color: rgba(16, 185, 129, 0.12);
-    color: #9ff0dd;
+    background-color: var(--status-completed-bg);
+    border-color: var(--status-completed-border);
+    color: var(--status-completed-text);
 }
 
 .cookOrdersAlertError {
-    background-color: rgba(239, 68, 68, 0.12);
-    color: #fecaca;
+    background-color: var(--status-cancelled-bg);
+    border-color: var(--status-cancelled-border);
+    color: var(--status-cancelled-text);
 }
 
 .cookOrdersGrid {
@@ -106,9 +115,20 @@
 .cookOrderDetailCard,
 .cookOrdersEmpty {
     background-color: var(--bg-secondary);
-    border: 1px solid var(--border-light);
-    border-radius: 16px;
-    padding: 22px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+}
+
+.cookOrderCard {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.cookOrderCard:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-card-hover);
 }
 
 .cookOrderCardHeader {
@@ -124,10 +144,35 @@
     width: fit-content;
     padding: 4px 10px;
     border-radius: 999px;
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--border-color);
     color: var(--text-secondary);
+    background-color: var(--surface-muted);
     font-size: 12px;
     font-weight: 700;
+}
+
+.cookOrderStatus-pending {
+    color: var(--status-pending-text);
+    background-color: var(--status-pending-bg);
+    border-color: var(--status-pending-border);
+}
+
+.cookOrderStatus-in_progress {
+    color: var(--status-progress-text);
+    background-color: var(--status-progress-bg);
+    border-color: var(--status-progress-border);
+}
+
+.cookOrderStatus-completed {
+    color: var(--status-completed-text);
+    background-color: var(--status-completed-bg);
+    border-color: var(--status-completed-border);
+}
+
+.cookOrderStatus-cancelled {
+    color: var(--status-cancelled-text);
+    background-color: var(--status-cancelled-bg);
+    border-color: var(--status-cancelled-border);
 }
 
 .cookOrderTotal {
@@ -152,7 +197,7 @@
 .cookOrderLink {
     display: inline-flex;
     margin-top: 18px;
-    color: var(--color-primary-light);
+    color: var(--color-accent-blue);
     font-weight: 700;
 }
 
@@ -184,8 +229,8 @@
     gap: 16px;
     padding: 14px;
     border-radius: 12px;
-    border: 1px solid var(--border-light);
-    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-muted);
 }
 
 .cookOrderItem div {
@@ -209,7 +254,7 @@
     align-items: center;
     margin-top: 24px;
     padding-top: 18px;
-    border-top: 1px solid var(--border-light);
+    border-top: 1px solid var(--border-color);
 }
 
 .cookOrderTotalRow span {

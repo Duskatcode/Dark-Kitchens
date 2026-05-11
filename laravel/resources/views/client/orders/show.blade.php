@@ -27,7 +27,7 @@
 
     <section class="clientMenuDetail">
         <div class="clientMenuDetailCard">
-            <span class="clientMenuCategory">{{ $order->status?->name }}</span>
+            <span class="clientMenuCategory clientMenuStatus-{{ $order->status?->name }}">{{ $order->status?->name }}</span>
 
             <h2>Resumen del pedido</h2>
 
