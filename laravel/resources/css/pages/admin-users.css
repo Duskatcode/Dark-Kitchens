@@ -234,3 +234,30 @@
         grid-column: span 1;
     }
 }
+
+.adminBadge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border-light);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.adminBadgeInfo {
+    color: var(--color-primary-light);
+    background-color: rgba(0, 191, 232, 0.10);
+}
+
+.adminBadgeNeutral {
+    color: var(--text-secondary);
+    background-color: rgba(15, 23, 42, 0.04);
+}
+
+.adminFormHint {
+    margin-top: 8px;
+    color: var(--text-secondary);
+    font-size: 13px;
+}

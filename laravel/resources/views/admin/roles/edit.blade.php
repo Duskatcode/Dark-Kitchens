@@ -1,36 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Role</title>
-</head>
-<body>
-    <h1>Edit Role</h1>
+@extends('layouts.app')
 
-    @if ($errors->any())
+@section('title', 'Editar rol')
+
+@push('styles')
+    @vite('resources/css/pages/admin-users.css')
+@endpush
+
+@section('content')
+<div class="adminUsersPage">
+    <header class="adminUsersHeader">
         <div>
-            <p>Please fix the following errors:</p>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            <h1 class="adminUsersTitle">Editar rol</h1>
+            <p class="adminUsersSubtitle">Actualiza el nombre del rol seleccionado.</p>
+        </div>
+
+        <div class="adminUsersActions">
+            <a href="{{ route('admin.roles.index') }}" class="adminUsersButton adminUsersButtonSecondary">Volver</a>
+        </div>
+    </header>
+
+    @if (in_array($role->name, \App\Models\Role::coreRoles(), true))
+        <div class="adminAlert adminAlertError">
+            Este es un rol base del sistema. El controlador bloqueará cambios que rompan RBAC.
         </div>
     @endif
 
-    <form action="{{ route('admin.roles.update', $role) }}" method="POST">
-        @csrf
-        @method('PUT')
-        <div>
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" value="{{ old('name', $role->name) }}" required>
-        </div>
-        <div>
-            <button type="submit">Update</button>
-        </div>
-    </form>
+    <section class="adminUsersCard">
+        <form method="POST" action="{{ route('admin.roles.update', $role) }}">
+            @method('PUT')
 
-    <p><a href="{{ route('admin.roles.index') }}">Back to Roles</a></p>
-</body>
-</html>
+            @include('admin.roles._form', [
+                'role' => $role,
+                'buttonText' => 'Guardar cambios',
+            ])
+        </form>
+    </section>
+</div>
+@endsection
