@@ -22,3 +22,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Local workspace backups
+.workspace-backups/
+*.tgz
