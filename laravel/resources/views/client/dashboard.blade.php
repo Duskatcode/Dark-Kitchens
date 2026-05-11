@@ -38,11 +38,11 @@
                 <p>Explora productos disponibles, precios y categorías.</p>
             </a>
 
-            <div class="dashboardActionCard dashboardActionCardMuted">
-                <span class="dashboardCardLabel">Próximamente</span>
+            <a href="{{ route('client.orders.index') }}" class="dashboardActionCard">
+                <span class="dashboardCardLabel">Activo</span>
                 <h3>Mis pedidos</h3>
                 <p>Consulta el estado de tus pedidos y su historial.</p>
-            </div>
+            </a>
         </section>
     </main>
 </div>
