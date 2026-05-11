@@ -44,11 +44,11 @@
                 <p>Consulta y administra roles sin romper los accesos base del sistema.</p>
             </a>
 
-            <div class="dashboardActionCard dashboardActionCardMuted">
-                <span class="dashboardCardLabel">Próximamente</span>
+            <a href="{{ route('admin.products.index') }}" class="dashboardActionCard">
+                <span class="dashboardCardLabel">Activo</span>
                 <h3>Productos</h3>
                 <p>Gestiona categorías, productos, disponibilidad y precios del menú.</p>
-            </div>
+            </a>
 
             <div class="dashboardActionCard dashboardActionCardMuted">
                 <span class="dashboardCardLabel">Próximamente</span>
