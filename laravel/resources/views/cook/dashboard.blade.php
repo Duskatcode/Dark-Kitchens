@@ -32,17 +32,17 @@
         </section>
 
         <section class="dashboardGrid">
-            <div class="dashboardActionCard dashboardActionCardMuted">
-                <span class="dashboardCardLabel">Próximamente</span>
+            <a href="{{ route('cook.orders.index') }}" class="dashboardActionCard">
+                <span class="dashboardCardLabel">Activo</span>
                 <h3>Pedidos pendientes</h3>
                 <p>Lista de pedidos que aún deben aceptarse o prepararse.</p>
-            </div>
+            </a>
 
-            <div class="dashboardActionCard dashboardActionCardMuted">
-                <span class="dashboardCardLabel">Próximamente</span>
+            <a href="{{ route('cook.orders.index') }}" class="dashboardActionCard">
+                <span class="dashboardCardLabel">Activo</span>
                 <h3>En preparación</h3>
                 <p>Control de pedidos activos dentro de la cocina.</p>
-            </div>
+            </a>
         </section>
     </main>
 </div>
