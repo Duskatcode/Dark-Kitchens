@@ -20,6 +20,7 @@ class Order extends Model
     {
         return [
             'order_date' => 'datetime',
+            'total_amount' => 'decimal:2',
         ];
     }
 

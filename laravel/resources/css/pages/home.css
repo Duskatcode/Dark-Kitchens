@@ -1,51 +1,115 @@
-
 .homePage {
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--bg-dark);
-    padding: 16px;
-}
-
-.homeCard {
-    width: 100%;
-    max-width: 400px;
-    background-color: var(--bg-secondary);
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    text-align: center;
-}
-
-.homeTitle {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 12px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--bg-primary) 46%, var(--surface-blue) 100%);
     color: var(--text-primary);
 }
 
+.homeNav {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.homeBrand {
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-decoration: none;
+}
+
+.homeBrand:hover {
+    text-decoration: none;
+}
+
+.homeNavActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.homeMain {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 24px 72px;
+}
+
+.homeHero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+    gap: 40px;
+    align-items: center;
+}
+
+.homeHeroContent {
+    max-width: 760px;
+}
+
+.homeEyebrow {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 20px;
+    padding: 7px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    color: var(--color-accent-blue);
+    background-color: var(--surface-blue);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.homeTitle {
+    max-width: 820px;
+    color: var(--text-primary);
+    font-size: 64px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0;
+    margin-bottom: 24px;
+}
+
 .homeSubtitle {
-    font-size: 16px;
+    max-width: 700px;
     color: var(--text-secondary);
+    font-size: 18px;
+    line-height: 1.7;
     margin-bottom: 32px;
 }
 
 .homeActions {
     display: flex;
-    gap: 16px;
-    justify-content: center;
+    gap: 14px;
+    align-items: center;
     flex-wrap: wrap;
 }
 
 .homeButton {
-    padding: 10px 24px;
-    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 18px;
+    border-radius: var(--radius-control);
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
     text-decoration: none;
+}
+
+.homeButton:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
 }
 
 .homeButtonPrimary {
@@ -54,9 +118,153 @@
     border: 1px solid var(--color-primary);
 }
 
-.homeButtonOutline {
-    background-color: transparent;
-    color: var(--color-primary-light);
-    border: 1px solid var(--color-primary);
+.homeButtonPrimary:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
 }
 
+.homeButtonOutline {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.homeButtonOutline:hover {
+    background-color: var(--color-accent-navy);
+    border-color: var(--color-accent-navy);
+    color: #fff;
+}
+
+.homePanel {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    box-shadow: var(--shadow-soft);
+}
+
+.homePanelHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.homePanelStatus {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background-color: var(--color-success);
+    box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.10);
+}
+
+.homePanelList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.homePanelItem {
+    padding: 16px;
+    background-color: var(--surface-blue);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.homePanelItem strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+    font-size: 15px;
+}
+
+.homePanelItem span {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.homeFeatures {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 56px;
+}
+
+.homeFeatureCard {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+}
+
+.homeFeatureNumber {
+    display: inline-flex;
+    margin-bottom: 18px;
+    color: var(--color-accent-blue);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.homeFeatureCard h2 {
+    color: var(--text-primary);
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.homeFeatureCard p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .homeHero {
+        grid-template-columns: 1fr;
+    }
+
+    .homePanel {
+        max-width: 620px;
+    }
+
+    .homeFeatures {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .homeNav {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .homeNavActions {
+        justify-content: flex-start;
+    }
+
+    .homeMain {
+        padding-top: 28px;
+    }
+
+    .homeTitle {
+        font-size: 42px;
+    }
+
+    .homeSubtitle {
+        font-size: 16px;
+    }
+
+    .homeActions,
+    .homeNavActions {
+        width: 100%;
+    }
+
+    .homeButton {
+        width: 100%;
+    }
+}

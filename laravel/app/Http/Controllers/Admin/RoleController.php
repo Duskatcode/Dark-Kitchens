@@ -26,7 +26,14 @@ class RoleController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'max:50', 'unique:roles,name'],
+            'name' => [
+                'required',
+                'string',
+                'max:50',
+                'lowercase',
+                'alpha_dash',
+                Rule::unique('roles', 'name'),
+            ],
         ]);
 
         Role::create($validated);
@@ -48,10 +55,19 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role): RedirectResponse
     {
+        if ($this->isCoreRole($role)) {
+            session()->flash('error', 'The role "'.$role->name.'" cannot be renamed.');
+
+            return redirect()->route('admin.roles.index');
+        }
+
         $validated = $request->validate([
             'name' => [
                 'required',
+                'string',
                 'max:50',
+                'lowercase',
+                'alpha_dash',
                 Rule::unique('roles', 'name')->ignore($role->id),
             ],
         ]);
@@ -65,9 +81,7 @@ class RoleController extends Controller
 
     public function destroy(Role $role): RedirectResponse
     {
-        $protectedRoles = Role::coreRoles();
-
-        if (in_array(strtolower($role->name), $protectedRoles, true)) {
+        if ($this->isCoreRole($role)) {
             session()->flash('error', 'The role "'.$role->name.'" cannot be deleted.');
 
             return redirect()->route('admin.roles.index');
@@ -78,5 +92,10 @@ class RoleController extends Controller
         session()->flash('success', 'Role deleted successfully.');
 
         return redirect()->route('admin.roles.index');
+    }
+
+    private function isCoreRole(Role $role): bool
+    {
+        return in_array($role->name, Role::coreRoles(), true);
     }
 }

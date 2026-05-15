@@ -17,6 +17,14 @@ class OrderDetail extends Model
         'subtotal',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'unit_price' => 'decimal:2',
+            'subtotal' => 'decimal:2',
+        ];
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);
