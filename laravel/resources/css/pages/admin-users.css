@@ -297,3 +297,88 @@
     color: var(--text-secondary);
     font-size: 13px;
 }
+
+.adminPermissionsSection {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.adminPermissionsTitle {
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0;
+}
+
+.adminPermissionsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.adminPermissionGroup {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    padding: 14px;
+    background: var(--bg-primary);
+}
+
+.adminPermissionGroup legend {
+    padding: 0 6px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.adminPermissionList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.adminPermissionOption {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 10px;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.adminPermissionOption span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.adminPermissionOption small {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.adminRolePermissions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.adminPermissionBadge {
+    display: inline-flex;
+    align-items: center;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: var(--radius-control);
+    background: var(--surface-blue);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .adminPermissionsGrid {
+        grid-template-columns: 1fr;
+    }
+}

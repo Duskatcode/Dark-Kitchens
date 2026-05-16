@@ -13,7 +13,9 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         foreach (Role::coreRoles() as $role) {
-            Role::firstOrCreate(['name' => $role]);
+            Role::query()->firstOrCreate(['name' => $role]);
         }
+
+        PermissionSeeder::syncBaseRolePermissions();
     }
 }

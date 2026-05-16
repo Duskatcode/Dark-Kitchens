@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/css/pages/home.css',
                 'resources/css/pages/dashboard.css',
                 'resources/css/pages/admin-users.css',
+                'resources/css/pages/admin-roles.css',
                 'resources/css/pages/client-menu.css',
                 'resources/css/pages/cook-orders.css',
                 'resources/js/app.js',

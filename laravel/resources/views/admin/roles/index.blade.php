@@ -4,6 +4,7 @@
 
 @push('styles')
     @vite('resources/css/pages/admin-users.css')
+    @vite('resources/css/pages/admin-roles.css')
 @endpush
 
 @section('content')
@@ -24,6 +25,10 @@
         <div class="adminAlert adminAlertSuccess">{{ session('status') }}</div>
     @endif
 
+    @if (session('error'))
+        <div class="adminAlert adminAlertError">{{ session('error') }}</div>
+    @endif
+
     @if ($errors->any())
         <div class="adminAlert adminAlertError">
             @foreach ($errors->all() as $error)
@@ -39,6 +44,7 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Tipo</th>
+                    <th>Permisos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -57,6 +63,15 @@
                             </span>
                         </td>
                         <td>
+                            <div class="adminRolePermissions">
+                                <span class="adminBadge adminBadgeNeutral">{{ $role->permissions_count }} permisos</span>
+
+                                @foreach ($role->permissions->take(3) as $permission)
+                                    <span class="adminPermissionBadge">{{ $permission->key }}</span>
+                                @endforeach
+                            </div>
+                        </td>
+                        <td>
                             <div class="adminUsersTableActions">
                                 <a href="{{ route('admin.roles.edit', $role) }}" class="adminInlineAction">Editar</a>
 
@@ -70,7 +85,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4">No hay roles registrados.</td>
+                        <td colspan="5">No hay roles registrados.</td>
                     </tr>
                 @endforelse
             </tbody>

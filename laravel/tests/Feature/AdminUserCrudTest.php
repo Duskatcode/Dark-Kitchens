@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\PermissionSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -17,6 +19,7 @@ class AdminUserCrudTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
+        $this->seed([PermissionSeeder::class, RoleSeeder::class]);
     }
 
     public function test_guest_cannot_access_admin_users_module(): void
