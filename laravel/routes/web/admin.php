@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -29,6 +30,11 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('permission:admin.categories.update')->name('categories.edit');
         Route::match(['put', 'patch'], '/categories/{category}', [CategoryController::class, 'update'])->middleware('permission:admin.categories.update')->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->middleware('permission:admin.categories.delete')->name('categories.destroy');
+
+        Route::get('/orders', [OrderController::class, 'index'])->middleware('permission:admin.orders.view')->name('orders.index');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware('permission:admin.orders.view')->name('orders.show');
+        Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->middleware('permission:admin.orders.update_status')->name('orders.update-status');
+        Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->middleware('permission:admin.orders.delete')->name('orders.destroy');
 
         Route::get('/products', [ProductController::class, 'index'])->middleware('permission:admin.products.view')->name('products.index');
         Route::get('/products/create', [ProductController::class, 'create'])->middleware('permission:admin.products.create')->name('products.create');
