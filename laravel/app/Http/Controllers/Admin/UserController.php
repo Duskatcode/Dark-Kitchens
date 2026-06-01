@@ -41,7 +41,7 @@ class UserController extends Controller
 
     public function create(): View
     {
-        $roles = Role::query()->orderBy('name')->get();
+        $roles = $this->assignableRoles();
 
         return view('admin.users.create', compact('roles'));
     }
@@ -65,7 +65,7 @@ class UserController extends Controller
     public function edit(User $user): View
     {
         $user->load('role');
-        $roles = Role::query()->orderBy('name')->get();
+        $roles = $this->assignableRoles();
 
         return view('admin.users.edit', compact('user', 'roles'));
     }
@@ -127,6 +127,14 @@ class UserController extends Controller
         return redirect()
             ->route('admin.users.index')
             ->with('status', 'Usuario eliminado correctamente.');
+    }
+
+    private function assignableRoles()
+    {
+        return Role::query()
+            ->whereIn('name', Role::coreRoles())
+            ->orderBy('name')
+            ->get();
     }
 
     private function isRemovingLastAdmin(User $user, ?int $newRoleId): bool
