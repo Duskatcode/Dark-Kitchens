@@ -77,4 +77,31 @@ class OrderController extends Controller
 
         return view('client.orders.show', compact('order'));
     }
+
+    public function cancel(Request $request, Order $order): RedirectResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+
+        $order->load('status');
+
+        if ($order->status?->name !== 'pending') {
+            return redirect()
+                ->route('client.orders.show', $order)
+                ->withErrors([
+                    'status' => 'Solo puedes cancelar pedidos en estado pending.',
+                ]);
+        }
+
+        $cancelledStatus = Status::query()->firstOrCreate([
+            'name' => 'cancelled',
+        ]);
+
+        $order->update([
+            'status_id' => $cancelledStatus->id,
+        ]);
+
+        return redirect()
+            ->route('client.orders.show', $order)
+            ->with('status', 'Pedido cancelado correctamente.');
+    }
 }

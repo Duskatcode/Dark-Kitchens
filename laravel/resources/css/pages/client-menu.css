@@ -344,3 +344,32 @@
         flex-direction: column;
     }
 }
+
+.btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 1rem;
+    border-radius: 12px;
+    border: 0;
+    background: #dc2626;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.clientOrderCancelForm {
+    margin-top: 1.25rem;
+}
+
+.clientMenuAlertError {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+.clientMenuAlertError ul {
+    margin: 0;
+    padding-left: 1.25rem;
+}

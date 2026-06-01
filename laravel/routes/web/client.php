@@ -17,4 +17,5 @@ Route::middleware(['auth', 'role:client'])
         Route::get('/orders', [OrderController::class, 'index'])->middleware('permission:client.orders.view')->name('orders.index');
         Route::post('/orders', [OrderController::class, 'store'])->middleware('permission:client.orders.create')->name('orders.store');
         Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware('permission:client.orders.view')->name('orders.show');
+        Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->middleware('permission:client.orders.cancel')->name('orders.cancel');
     });

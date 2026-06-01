@@ -25,6 +25,16 @@
         <div class="clientMenuAlert">{{ session('status') }}</div>
     @endif
 
+    @if ($errors->any())
+        <div class="clientMenuAlert clientMenuAlertError">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <section class="clientMenuDetail">
         <div class="clientMenuDetailCard">
             <span class="clientMenuCategory clientMenuStatus-{{ $order->status?->name }}">{{ $order->status?->name }}</span>
@@ -52,6 +62,17 @@
                 <span>Total</span>
                 <strong>${{ number_format((float) $order->total_amount, 0, ',', '.') }}</strong>
             </div>
+
+            @if ($order->status?->name === 'pending')
+                <form method="POST" action="{{ route('client.orders.cancel', $order) }}" class="clientOrderCancelForm">
+                    @csrf
+                    @method('PATCH')
+
+                    <button type="submit" class="btn-danger">
+                        Cancelar pedido
+                    </button>
+                </form>
+            @endif
         </div>
     </section>
 </div>

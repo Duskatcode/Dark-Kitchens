@@ -237,6 +237,85 @@ class ClientOrderTest extends TestCase
             ->assertForbidden();
     }
 
+
+    public function test_client_can_cancel_own_pending_order(): void
+    {
+        $client = $this->createUserWithRole(Role::CLIENT);
+        $order = $this->createOrderForClientWithStatus($client, 'pending');
+
+        $this->actingAs($client)
+            ->patch(route('client.orders.cancel', $order))
+            ->assertRedirect(route('client.orders.show', $order));
+
+        $this->assertSame('cancelled', $order->fresh()->status->name);
+    }
+
+    public function test_client_cannot_cancel_other_client_order(): void
+    {
+        $client = $this->createUserWithRole(Role::CLIENT);
+        $otherClient = $this->createUserWithRole(Role::CLIENT);
+        $order = $this->createOrderForClientWithStatus($otherClient, 'pending');
+
+        $this->actingAs($client)
+            ->patch(route('client.orders.cancel', $order))
+            ->assertNotFound();
+
+        $this->assertSame('pending', $order->fresh()->status->name);
+    }
+
+    public function test_client_cannot_cancel_in_progress_order(): void
+    {
+        $client = $this->createUserWithRole(Role::CLIENT);
+        $order = $this->createOrderForClientWithStatus($client, 'in_progress');
+
+        $this->actingAs($client)
+            ->patch(route('client.orders.cancel', $order))
+            ->assertRedirect(route('client.orders.show', $order))
+            ->assertSessionHasErrors('status');
+
+        $this->assertSame('in_progress', $order->fresh()->status->name);
+    }
+
+    public function test_client_cannot_cancel_completed_order(): void
+    {
+        $client = $this->createUserWithRole(Role::CLIENT);
+        $order = $this->createOrderForClientWithStatus($client, 'completed');
+
+        $this->actingAs($client)
+            ->patch(route('client.orders.cancel', $order))
+            ->assertRedirect(route('client.orders.show', $order))
+            ->assertSessionHasErrors('status');
+
+        $this->assertSame('completed', $order->fresh()->status->name);
+    }
+
+    public function test_client_cancel_order_requires_cancel_permission(): void
+    {
+        $client = $this->createUserWithRole(Role::CLIENT);
+        $order = $this->createOrderForClientWithStatus($client, 'pending');
+
+        $client->role->permissions()->sync([]);
+
+        $this->actingAs($client)
+            ->patch(route('client.orders.cancel', $order))
+            ->assertForbidden();
+
+        $this->assertSame('pending', $order->fresh()->status->name);
+    }
+
+
+    private function createOrderForClientWithStatus(User $client, string $statusName): Order
+    {
+        $status = Status::query()->firstOrCreate(['name' => $statusName]);
+
+        return Order::query()->create([
+            'user_id' => $client->id,
+            'order_date' => now(),
+            'total_amount' => 12000,
+            'status_id' => $status->id,
+        ]);
+    }
+
     private function createUserWithRole(string $roleName): User
     {
         $role = Role::query()->firstOrCreate(['name' => $roleName]);
