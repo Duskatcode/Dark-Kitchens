@@ -1,137 +1,199 @@
-# Dark-Kitchens
-monolito en base php para plataforma donde el dueño sube su menú, el cliente hace el pedido y el cocinero ve una lista de tareas pendientes.
+# Dark Kitchens
 
+Aplicación web para gestión básica de una dark kitchen con roles diferenciados para administración, clientes y cocina.
 
-## Descripción del proyecto
-**Dark Kitchens** es una plataforma web pensada para emprendimientos de comida que trabajan únicamente por domicilios o delivery. La idea nace de la necesidad de organizar mejor los pedidos, el menú y las tareas de cocina, evitando depender solamente de WhatsApp para todo el proceso.
+## Stack
 
-La plataforma permite que el dueño del negocio publique su menú, que los clientes realicen pedidos de forma más ordenada y que el cocinero visualice una lista de tareas pendientes según los pedidos recibidos.
+- Laravel 12
+- Blade
+- Vite
+- MySQL 8
+- Docker Compose
+- PHPUnit
 
-## Problemática
-Hoy en día muchos negocios de comida pequeños o medianos manejan sus pedidos por chats, llamadas o mensajes informales. Esto puede generar desorden, pérdida de información, demora en la atención y dificultad para llevar el control de los pedidos en tiempo real.
+## Roles principales
 
-## Solución propuesta
-Este proyecto busca ofrecer una solución sencilla y funcional para centralizar la operación básica de una dark kitchen mediante una plataforma web desarrollada en PHP.
+- `admin`: administra usuarios, roles, permisos, categorías, productos y pedidos.
+- `client`: consulta menú, crea pedidos, ve sus pedidos y cancela pedidos pendientes.
+- `cook`: consulta la cola de cocina y actualiza estados de pedidos.
 
-## Objetivo general
-Desarrollar una aplicación web en PHP que permita gestionar el menú, registrar pedidos y organizar las tareas de cocina en un emprendimiento de tipo dark kitchen.
+## Usuarios de prueba
 
-## Objetivos específicos
-- Permitir al administrador o dueño registrar, editar y eliminar productos del menú.
-- Facilitar al cliente la visualización del menú y la realización de pedidos.
-- Mostrar al cocinero una lista de pedidos pendientes para mejorar la organización en cocina.
-- Centralizar la información del negocio en una sola plataforma.
-
-## Usuarios del sistema
-### Dueño o administrador
-- Gestiona el menú.
-- Revisa pedidos realizados.
-- Controla el estado general del negocio.
-
-### Cliente
-- Consulta el menú disponible.
-- Realiza pedidos.
-- Puede visualizar información básica de su pedido.
-
-### Cocinero
-- Consulta los pedidos pendientes.
-- Organiza la preparación según el orden de llegada o prioridad.
+| Rol | Email | Password |
+|---|---|---|
+| Admin | `admin@test.com` | `password` |
+| Cliente | `client@test.com` | `password` |
+| Cocina | `cook@test.com` | `password` |
 
 ## Funcionalidades principales
-- Registro e inicio de sesión de usuarios.
-- Gestión del menú de productos.
-- Visualización del menú por parte del cliente.
-- Registro de pedidos.
-- Listado de pedidos pendientes para cocina.
+
+### Admin
+
+- Dashboard administrativo.
+- Gestión de usuarios.
+- Gestión de roles.
+- Gestión de permisos por rol.
+- Gestión de categorías.
+- Gestión de productos.
+- Gestión de pedidos.
+- Filtro de pedidos por estado.
 - Cambio de estado de pedidos.
-- Panel básico de administración.
+- Eliminación restringida de pedidos pendientes.
 
-## Instalación local con Docker
+### Cliente
 
-### Requisitos
-- Docker Desktop corriendo.
-- Estar ubicado en la raíz del repo (donde vive `docker-compose.yml`).
+- Ver menú.
+- Ver detalle de productos disponibles.
+- Crear pedidos.
+- Ver pedidos propios.
+- Cancelar pedidos propios en estado `pending`.
 
-### Arranque desde cero
-```bash
+### Cocina
+
+- Ver pedidos `pending` e `in_progress`.
+- Cambiar pedidos de `pending` a `in_progress`.
+- Cambiar pedidos de `in_progress` a `completed`.
+
+## Estados de pedidos
+
+- `pending`
+- `in_progress`
+- `completed`
+- `cancelled`
+
+## Permisos RBAC
+
+El sistema usa una combinación de middleware:
+
+```txt
+auth
+role:{role}
+permission:{permission_key}
+
+Permisos principales:
+
+admin.dashboard.view
+admin.users.view
+admin.users.create
+admin.users.update
+admin.users.delete
+admin.roles.view
+admin.roles.create
+admin.roles.update
+admin.roles.delete
+admin.roles.manage_permissions
+admin.categories.view
+admin.categories.create
+admin.categories.update
+admin.categories.delete
+admin.products.view
+admin.products.create
+admin.products.update
+admin.products.delete
+admin.orders.view
+admin.orders.update_status
+admin.orders.delete
+client.orders.view
+client.orders.create
+client.orders.cancel
+cook.orders.view
+cook.orders.update_status
+Instalación local con Docker
+Requisitos
+Docker Desktop corriendo.
+Estar ubicado en la raíz del repo, donde está docker-compose.yml.
+Arranque
 cp laravel/.env.example laravel/.env
 docker compose up -d --build
 docker compose --profile tools run --rm composer install
 docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate --seed
-```
 
-### Verificación rápida
-```bash
-docker compose config
+Verificar contenedores:
+
 docker compose ps
-docker compose exec app php artisan --version
-```
 
-La app queda disponible en `http://localhost:8080` y MySQL en `127.0.0.1:3307`.
+La app queda disponible normalmente en:
 
-## Uso de Artisan
-Para cualquier comando de Laravel:
+http://localhost:8080
 
-```bash
-docker compose exec app php artisan [comando]
-```
+MySQL queda disponible en:
 
-## Nota importante sobre Composer
-Las dependencias de Laravel **no se instalan en el build** de la imagen para desarrollo. Este proyecto monta `./laravel` sobre `/var/www/html`, por lo que cualquier `vendor/` generado en la imagen se tapa con el volumen del host. Por eso el flujo correcto es ejecutar `composer install` explícitamente con:
+127.0.0.1:3307
+Migraciones y seeders
 
-```bash
-docker compose --profile tools run --rm composer install
-```
+Para una base existente:
 
-## Demo CRUD administrativo de usuarios
+docker compose exec app php artisan migrate
+docker compose exec app php artisan db:seed --class=PermissionSeeder
+docker compose exec app php artisan db:seed --class=RoleSeeder
 
-### Seeder de admin (idempotente)
-El seeder crea/actualiza automáticamente:
+Para un entorno limpio de desarrollo:
 
-- Rol `Admin`
-- Rol `User`
-- Rol `Cook`
-- Usuario admin de prueba
-
-Credenciales del admin de prueba:
-
-- Email: `admin@darkkitchens.local`
-- Password: `Admin12345!`
-
-### Ruta del módulo
-- `http://localhost:8080/admin/users`
-
-### Flujo de demostración
-1. Ejecutar migraciones y seed:
-
-```bash
 docker compose exec app php artisan migrate:fresh --seed
-```
 
-2. Iniciar sesión con el admin en:
-- `http://localhost:8080/login`
+migrate:fresh --seed borra y recrea toda la base de datos.
 
-3. Entrar al dashboard y abrir `Gestionar usuarios`.
+Frontend
+cd laravel
+npm install
+npm run build
+cd ..
+Tests
+docker compose exec app php artisan test
 
-4. En `/admin/users` demostrar:
-- **Listar** usuarios.
-- **Crear** un usuario con nombre, apellido, email, rol y password.
-- **Editar** ese usuario (si dejas password vacío, se mantiene la anterior).
-- **Eliminar** ese usuario.
+Última validación conocida:
 
-5. Validar restricción de acceso:
-- Inicia sesión con un usuario normal (`register`) y abre `/admin/users`.
-- Debe responder `403` (acceso denegado).
+93 tests passed
+338 assertions
+URLs principales
+General
+/
+/login
+/dashboard
+Admin
+/admin/dashboard
+/admin/users
+/admin/users/create
+/admin/roles
+/admin/roles/create
+/admin/categories
+/admin/products
+/admin/orders
+Cliente
+/client/dashboard
+/client/menu
+/client/orders
+Cocina
+/cook/dashboard
+/cook/orders
+Flujo recomendado de prueba manual
+Iniciar sesión como admin.
+Crear usuario cliente.
+Crear usuario cocina.
+Crear categoría.
+Crear producto disponible.
+Iniciar sesión como cliente.
+Crear pedido.
+Cancelar pedido si está en estado pending.
+Crear otro pedido.
+Iniciar sesión como cocina.
+Cambiar pedido de pending a in_progress.
+Cambiar pedido de in_progress a completed.
+Iniciar sesión como admin.
+Revisar /admin/orders.
+Filtrar pedidos por estado.
+Ver detalle de pedido.
+Intentar cambios de estado válidos e inválidos.
+Validación antes de entrega
+docker compose ps
+docker compose exec app php artisan optimize:clear
+docker compose exec app php artisan migrate
+docker compose exec app php artisan test
 
-### Verificación rápida por consola
-```bash
-docker compose exec app php artisan route:list | grep admin/users
-```
+cd laravel
+npm run build
+cd ..
+Rama principal de trabajo
+feat/finalize-dark-kitchens-rbac
 
-Debe listar rutas `admin.users.*` para index, create, store, show, edit, update y destroy.
-
-### Tests del CRUD admin
-```bash
-docker compose exec app php artisan test --filter=AdminUserCrudTest
-```
