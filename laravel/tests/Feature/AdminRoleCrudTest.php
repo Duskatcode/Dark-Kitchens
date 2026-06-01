@@ -2,9 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\PermissionSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class AdminRoleCrudTest extends TestCase
@@ -16,6 +20,7 @@ class AdminRoleCrudTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
+        $this->seed([PermissionSeeder::class, RoleSeeder::class]);
     }
 
     public function test_guest_cannot_access_admin_roles_module(): void
@@ -55,16 +60,22 @@ class AdminRoleCrudTest extends TestCase
     public function test_admin_can_create_valid_non_core_role(): void
     {
         $admin = $this->createUserWithRole(Role::ADMIN);
+        $permission = Permission::query()->where('key', 'admin.users.view')->firstOrFail();
 
         $this->actingAs($admin)
             ->post(route('admin.roles.store'), [
                 'name' => 'manager',
+                'permissions' => [$permission->id],
             ])
             ->assertRedirect(route('admin.roles.index'));
 
         $this->assertDatabaseHas('roles', [
             'name' => 'manager',
         ]);
+
+        $role = Role::query()->where('name', 'manager')->firstOrFail();
+
+        $this->assertTrue($role->permissions()->whereKey($permission->id)->exists());
     }
 
     public function test_admin_cannot_create_role_with_uppercase_name(): void
@@ -81,6 +92,28 @@ class AdminRoleCrudTest extends TestCase
 
         $this->assertDatabaseMissing('roles', [
             'name' => 'Manager',
+        ]);
+    }
+
+    public function test_admin_roles_manage_permissions_is_required_to_create_role_with_permissions(): void
+    {
+        $admin = $this->createUserWithRole(Role::ADMIN);
+        $admin->role->permissions()->sync(
+            Permission::query()
+                ->whereIn('key', ['admin.roles.create', 'admin.roles.view'])
+                ->pluck('id')
+        );
+        $permission = Permission::query()->where('key', 'admin.users.view')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->post(route('admin.roles.store'), [
+                'name' => 'support',
+                'permissions' => [$permission->id],
+            ])
+            ->assertForbidden();
+
+        $this->assertDatabaseMissing('roles', [
+            'name' => 'support',
         ]);
     }
 
@@ -133,10 +166,12 @@ class AdminRoleCrudTest extends TestCase
     {
         $admin = $this->createUserWithRole(Role::ADMIN);
         $role = Role::query()->create(['name' => 'manager']);
+        $permission = Permission::query()->where('key', 'admin.products.view')->firstOrFail();
 
         $this->actingAs($admin)
             ->put(route('admin.roles.update', $role), [
                 'name' => 'operator',
+                'permissions' => [$permission->id],
             ])
             ->assertRedirect(route('admin.roles.index'));
 
@@ -144,6 +179,8 @@ class AdminRoleCrudTest extends TestCase
             'id' => $role->id,
             'name' => 'operator',
         ]);
+
+        $this->assertTrue($role->fresh()->permissions()->whereKey($permission->id)->exists());
 
         $this->actingAs($admin)
             ->delete(route('admin.roles.destroy', $role->fresh()))
@@ -159,6 +196,72 @@ class AdminRoleCrudTest extends TestCase
         $role = Role::factory()->make();
 
         $this->assertContains($role->name, Role::coreRoles());
+    }
+
+    public function test_admin_can_update_permissions_for_core_client_and_cook_roles(): void
+    {
+        $admin = $this->createUserWithRole(Role::ADMIN);
+        $cook = Role::query()->where('name', Role::COOK)->firstOrFail();
+        $permission = Permission::query()->where('key', 'cook.orders.view')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->put(route('admin.roles.update', $cook), [
+                'name' => Role::COOK,
+                'permissions' => [$permission->id],
+            ])
+            ->assertRedirect(route('admin.roles.index'));
+
+        $this->assertSame(['cook.orders.view'], $cook->fresh()->permissions()->pluck('key')->all());
+    }
+
+    public function test_admin_roles_manage_permissions_is_required_to_sync_permissions(): void
+    {
+        $admin = $this->createUserWithRole(Role::ADMIN);
+        $admin->role->permissions()->sync(
+            Permission::query()
+                ->whereIn('key', ['admin.roles.update', 'admin.roles.view'])
+                ->pluck('id')
+        );
+
+        $role = Role::query()->create(['name' => 'limited']);
+        $permission = Permission::query()->where('key', 'admin.users.view')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->put(route('admin.roles.update', $role), [
+                'name' => 'limited',
+                'permissions' => [$permission->id],
+            ])
+            ->assertForbidden();
+
+        $this->assertFalse($role->fresh()->permissions()->whereKey($permission->id)->exists());
+    }
+
+    public function test_user_without_permission_receives_403_on_permission_route(): void
+    {
+        Route::get('/permission-test', fn () => 'ok')
+            ->middleware(['auth', 'permission:admin.roles.view']);
+
+        $client = $this->createUserWithRole(Role::CLIENT);
+
+        $this->actingAs($client)
+            ->get('/permission-test')
+            ->assertForbidden();
+    }
+
+    public function test_admin_role_keeps_all_permissions_when_update_posts_empty_permissions(): void
+    {
+        $adminUser = $this->createUserWithRole(Role::ADMIN);
+        $adminRole = Role::query()->where('name', Role::ADMIN)->firstOrFail();
+
+        $this->actingAs($adminUser)
+            ->put(route('admin.roles.update', $adminRole), [
+                'name' => Role::ADMIN,
+                'permissions' => [],
+            ])
+            ->assertRedirect(route('admin.roles.index'));
+
+        $this->assertSame(Permission::query()->count(), $adminRole->fresh()->permissions()->count());
+        $this->assertTrue($adminRole->fresh()->permissions()->where('key', 'admin.roles.manage_permissions')->exists());
     }
 
     private function createUserWithRole(string $roleName): User

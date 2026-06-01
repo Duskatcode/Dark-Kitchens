@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
+use Database\Seeders\PermissionSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,6 +23,7 @@ class AdminProductCrudTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
+        $this->seed([PermissionSeeder::class, RoleSeeder::class]);
     }
 
     public function test_guest_cannot_access_admin_products(): void
@@ -147,6 +150,45 @@ class AdminProductCrudTest extends TestCase
             ])
             ->assertRedirect(route('admin.products.create'))
             ->assertSessionHasErrors('category_id');
+    }
+
+    public function test_admin_product_actions_require_specific_permissions(): void
+    {
+        $admin = $this->createUserWithRole(Role::ADMIN);
+        $category = Category::query()->create(['name' => 'Platos fuertes']);
+        $product = Product::query()->create([
+            'name' => 'Burger clásica',
+            'description' => 'Hamburguesa artesanal.',
+            'price' => 24000,
+            'is_available' => true,
+            'category_id' => $category->id,
+        ]);
+
+        $admin->role->permissions()->sync([]);
+
+        $this->actingAs($admin)
+            ->post(route('admin.products.store'), [
+                'name' => 'Sin permiso',
+                'description' => 'Producto inválido por permisos.',
+                'price' => 10000,
+                'is_available' => 1,
+                'category_id' => $category->id,
+            ])
+            ->assertForbidden();
+
+        $this->actingAs($admin)
+            ->put(route('admin.products.update', $product), [
+                'name' => 'Sin permiso',
+                'description' => 'Producto inválido por permisos.',
+                'price' => 10000,
+                'is_available' => 1,
+                'category_id' => $category->id,
+            ])
+            ->assertForbidden();
+
+        $this->actingAs($admin)
+            ->delete(route('admin.products.destroy', $product))
+            ->assertForbidden();
     }
 
     private function createUserWithRole(string $roleName): User

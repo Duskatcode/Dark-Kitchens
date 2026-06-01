@@ -1,0 +1,197 @@
+.adminRoleForm {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.adminRoleFormCard {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    padding: 18px;
+}
+
+.adminRoleIdentityCard {
+    max-width: 760px;
+}
+
+.adminRoleSectionHeader {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.adminRoleSectionHeader h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0;
+}
+
+.adminRoleSectionHeader p {
+    margin: 4px 0 0;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.adminRoleAlerts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.adminRoleNotice {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-control);
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.adminRoleNoticeWarning {
+    background: var(--surface-blue);
+    color: var(--text-secondary);
+}
+
+.adminRoleNoticeInfo {
+    background: var(--status-completed-bg);
+    border-color: var(--status-completed-border);
+    color: var(--status-completed-text);
+}
+
+.adminPermissionGroups {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.adminPermissionGroupCard {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    background: var(--bg-primary);
+    padding: 16px;
+}
+
+.adminPermissionGroupHeader {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.adminPermissionGroupHeader h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0;
+}
+
+.adminPermissionGroupHeader span {
+    display: inline-flex;
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.adminPermissionTileGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.adminPermissionTile {
+    display: flex;
+    min-height: 142px;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    background: var(--bg-secondary);
+    padding: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.adminPermissionTile:hover {
+    border-color: var(--color-accent-blue);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-1px);
+}
+
+.adminPermissionTile.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.76;
+}
+
+.adminPermissionTile.is-disabled:hover {
+    border-color: var(--border-color);
+    box-shadow: none;
+    transform: none;
+}
+
+.adminPermissionTileTop {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+}
+
+.adminPermissionTileTop input[type="checkbox"] {
+    margin-top: 2px;
+}
+
+.adminPermissionTileTop strong {
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.adminPermissionTile code,
+.adminPermissionBadge {
+    width: fit-content;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px solid var(--status-progress-border);
+    border-radius: 999px;
+    background: var(--status-progress-bg);
+    color: var(--status-progress-text);
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.adminPermissionTileDescription {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+@media (max-width: 1100px) {
+    .adminPermissionTileGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    .adminRoleFormCard,
+    .adminPermissionGroupCard {
+        padding: 14px;
+    }
+
+    .adminPermissionTileGrid {
+        grid-template-columns: 1fr;
+    }
+}

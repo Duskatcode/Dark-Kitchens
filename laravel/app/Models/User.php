@@ -57,6 +57,23 @@ class User extends Authenticatable
         return $this->role?->name === $role;
     }
 
+    public function hasPermission(string $permissionKey): bool
+    {
+        $role = $this->role;
+
+        if (! $role) {
+            return false;
+        }
+
+        if ($role->relationLoaded('permissions')) {
+            return $role->permissions->contains('key', $permissionKey);
+        }
+
+        return $role->permissions()
+            ->where('key', $permissionKey)
+            ->exists();
+    }
+
     public function isAdmin(): bool
     {
         return $this->hasRole(Role::ADMIN);

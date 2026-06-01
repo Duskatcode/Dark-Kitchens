@@ -4,6 +4,7 @@
 
 @push('styles')
     @vite('resources/css/pages/admin-users.css')
+    @vite('resources/css/pages/admin-roles.css')
 @endpush
 
 @section('content')
@@ -23,6 +24,8 @@
         <form method="POST" action="{{ route('admin.roles.store') }}">
             @include('admin.roles._form', [
                 'role' => null,
+                'permissionsByGroup' => $permissionsByGroup,
+                'canManagePermissions' => $canManagePermissions,
                 'buttonText' => 'Crear rol',
             ])
         </form>

@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
+use Database\Seeders\PermissionSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,6 +23,7 @@ class CookOrderQueueTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
+        $this->seed([PermissionSeeder::class, RoleSeeder::class]);
     }
 
     public function test_guest_cannot_access_cook_orders(): void
@@ -123,6 +126,26 @@ class CookOrderQueueTest extends TestCase
             ->assertSessionHasErrors('status');
 
         $this->assertSame('pending', $order->fresh()->status->name);
+    }
+
+    public function test_cook_order_routes_require_specific_permissions(): void
+    {
+        $cook = $this->createUserWithRole(Role::COOK);
+        $order = $this->createOrderWithStatus('pending');
+
+        $cook->role->permissions()->sync([]);
+
+        $this->actingAs($cook)
+            ->get(route('cook.orders.index'))
+            ->assertForbidden();
+
+        $this->actingAs($cook)
+            ->get(route('cook.orders.show', $order))
+            ->assertForbidden();
+
+        $this->actingAs($cook)
+            ->patch(route('cook.orders.start', $order))
+            ->assertForbidden();
     }
 
     private function createUserWithRole(string $roleName): User
