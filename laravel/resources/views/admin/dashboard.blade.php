@@ -50,11 +50,11 @@
                 <p>Gestiona categorías, productos, disponibilidad y precios del menú.</p>
             </a>
 
-            <div class="dashboardActionCard dashboardActionCardMuted">
-                <span class="dashboardCardLabel">Próximamente</span>
+            <a href="{{ route('admin.orders.index') }}" class="dashboardActionCard">
+                <span class="dashboardCardLabel">Activo</span>
                 <h3>Pedidos</h3>
-                <p>Visualiza pedidos, estados y actividad operativa del negocio.</p>
-            </div>
+                <p>Visualiza pedidos, filtra por estado y gestiona la operación del negocio.</p>
+            </a>
         </section>
     </main>
 </div>
