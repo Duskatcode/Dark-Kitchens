@@ -14,7 +14,7 @@ Route::middleware(['auth', 'role:client'])
         Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
         Route::get('/menu/{product}', [MenuController::class, 'show'])->name('menu.show');
 
-        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-        Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::get('/orders', [OrderController::class, 'index'])->middleware('permission:client.orders.view')->name('orders.index');
+        Route::post('/orders', [OrderController::class, 'store'])->middleware('permission:client.orders.create')->name('orders.store');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware('permission:client.orders.view')->name('orders.show');
     });

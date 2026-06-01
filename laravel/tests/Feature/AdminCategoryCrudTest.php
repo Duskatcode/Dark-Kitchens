@@ -97,6 +97,43 @@ class AdminCategoryCrudTest extends TestCase
         ]);
     }
 
+    public function test_category_name_is_required(): void
+    {
+        $admin = $this->createUserWithRole(Role::ADMIN);
+
+        $this->actingAs($admin)
+            ->from(route('admin.categories.create'))
+            ->post(route('admin.categories.store'), [
+                'name' => '',
+            ])
+            ->assertRedirect(route('admin.categories.create'))
+            ->assertSessionHasErrors('name');
+    }
+
+    public function test_admin_category_actions_require_specific_permissions(): void
+    {
+        $admin = $this->createUserWithRole(Role::ADMIN);
+        $category = Category::query()->create(['name' => 'Combos']);
+
+        $admin->role->permissions()->sync([]);
+
+        $this->actingAs($admin)
+            ->post(route('admin.categories.store'), [
+                'name' => 'Sin permiso',
+            ])
+            ->assertForbidden();
+
+        $this->actingAs($admin)
+            ->put(route('admin.categories.update', $category), [
+                'name' => 'Sin permiso',
+            ])
+            ->assertForbidden();
+
+        $this->actingAs($admin)
+            ->delete(route('admin.categories.destroy', $category))
+            ->assertForbidden();
+    }
+
     private function createUserWithRole(string $roleName): User
     {
         $role = Role::query()->firstOrCreate(['name' => $roleName]);

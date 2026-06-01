@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
+use Database\Seeders\PermissionSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -20,6 +22,7 @@ class ClientOrderTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
+        $this->seed([PermissionSeeder::class, RoleSeeder::class]);
     }
 
     public function test_guest_cannot_access_client_orders(): void
@@ -195,6 +198,43 @@ class ClientOrderTest extends TestCase
         $this->actingAs($client)
             ->get(route('client.orders.show', $otherOrder))
             ->assertNotFound();
+    }
+
+    public function test_client_order_routes_require_specific_permissions(): void
+    {
+        $client = $this->createUserWithRole(Role::CLIENT);
+        $category = Category::query()->create(['name' => 'Entradas']);
+        $status = Status::query()->firstOrCreate(['name' => 'pending']);
+        $product = Product::query()->create([
+            'name' => 'Papas',
+            'description' => 'Papas rústicas.',
+            'price' => 12000,
+            'is_available' => true,
+            'category_id' => $category->id,
+        ]);
+        $order = Order::query()->create([
+            'user_id' => $client->id,
+            'order_date' => now(),
+            'total_amount' => 12000,
+            'status_id' => $status->id,
+        ]);
+
+        $client->role->permissions()->sync([]);
+
+        $this->actingAs($client)
+            ->get(route('client.orders.index'))
+            ->assertForbidden();
+
+        $this->actingAs($client)
+            ->get(route('client.orders.show', $order))
+            ->assertForbidden();
+
+        $this->actingAs($client)
+            ->post(route('client.orders.store'), [
+                'product_id' => $product->id,
+                'quantity' => 1,
+            ])
+            ->assertForbidden();
     }
 
     private function createUserWithRole(string $roleName): User
